@@ -1,0 +1,8 @@
+{
+  "asset": "asset:app/lib/constants/app_theme.dart",
+  "summary": {
+    "injector": [],
+    "module": [],
+    "injectable": []
+  }
+}

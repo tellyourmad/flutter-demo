@@ -1,0 +1,47 @@
+name: app
+description: A new Flutter project.
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^0.1.2
+
+  # 轮播组件
+  flutter_swiper: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+flutter:
+
+  uses-material-design: true
+
+  # 要添加资源到你的应用中，需要添加资源路径，如下：
+  assets:
+   - assets/images/home-active.png
+   - assets/images/home-inactive.png
+   - assets/images/category-active.png
+   - assets/images/category-inactive.png
+   - assets/images/cart-active.png
+   - assets/images/cart-inactive.png
+   - assets/images/mine-active.png
+   - assets/images/mine-inactive.png
+
+   - assets/images/login-logo.png
+
+   - assets/images/mine-header.png
+   - assets/images/2.0x/mine-header.png
+   
+
+  fonts:
+  - family: IconFonts
+    fonts:
+      - asset: assets/fonts/iconfont/iconfont.ttf

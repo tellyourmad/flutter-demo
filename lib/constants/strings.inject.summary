@@ -1,0 +1,8 @@
+{
+  "asset": "asset:app/lib/constants/strings.dart",
+  "summary": {
+    "injector": [],
+    "module": [],
+    "injectable": []
+  }
+}
