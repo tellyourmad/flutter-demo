@@ -19,12 +19,14 @@ flutter run
 ```
 
 
+
 ### 导读
 
-### 文件结构
+#### 文件结构
 ```
 lib/
-|- constants/   # 全局常量，包含：`theme`, `dimentions`, `api endpoints`, `preferences` and `strings`
+|- constants/   # 全局常量
+|- lanhu/   # 设计图
 |- ui/    # 具体页面
 |- utils/   # 工具类
 |- widgets/   # UI组件
@@ -57,6 +59,7 @@ ui/pages/cart_page.dart，页面的跳转方式
 ui/login/login.dart，表单相关，页面回退传参
 
 
+
 ### 相关知识文档
 
 基础：
@@ -66,16 +69,17 @@ ui/login/login.dart，表单相关，页面回退传参
 
 布局相关：
 
-- [基本布局](https://www.jianshu.com/p/1836d8d23926)
+- [常用布局Widget](https://www.jianshu.com/p/1836d8d23926)
 - [ShapeBorder 抽象类](https://www.cnblogs.com/z45281625/p/10400631.html)
 - [圆形/圆角](https://www.jianshu.com/p/b4085a1a5129)
-- [层叠布局Stack](https://www.jianshu.com/p/387d730cbe92)
+- [层叠布局 Stack](https://www.jianshu.com/p/387d730cbe92)
 - [CustomerScrollView](https://www.jianshu.com/p/ca79eb54a356)
 
 另外需要知道还有（后面需要用到的）：
 
-- [Dio](https://github.com/flutterchina/dio)
+- [Http请求库 Dio](https://github.com/flutterchina/dio)
 - [本地数据存储 SharedPreferences](https://www.jianshu.com/p/735b5684e900)
+
 
 
 ### 阿里巴巴矢量图使用
