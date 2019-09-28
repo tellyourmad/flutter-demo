@@ -1,0 +1,8 @@
+{
+  "asset": "asset:app/lib/services/base/base_service.dart",
+  "summary": {
+    "injector": [],
+    "module": [],
+    "injectable": []
+  }
+}

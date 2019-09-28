@@ -1,4 +1,5 @@
 import 'package:app/constants/app_theme.dart';
+import 'package:app/services/home_service.dart';
 import 'package:app/utils/screen_adapter.dart';
 import 'package:app/widgets/basic/iconfont_widget.dart';
 import 'package:app/widgets/overwrite/sliver_app_bar_delegate.dart';
@@ -56,10 +57,27 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  final HomeService _service = HomeService();
+
   List _images = [
     'http://images.9daye.com.cn/upload/prod/e3dced5e-a1cc-45dc-a9fa-e8a30eb1f230.jpeg',
     'http://images.9daye.com.cn/upload/prod/bff0e988-9ceb-4362-ac93-53b9846cc7a2.jpeg',
   ];
+
+  @override
+  void initState(){
+    super.initState();
+    _getData();   /// 在初始化时发送请求
+  }
+
+  void _getData() async {
+    /// 调用对应的service里的方法，发送请求获取信息
+    var result = await _service.getHomePage(1);
+    print('-------------请求成功----------------');
+    print(result.title);      // 输出响应信息
+    print('------------------------------------');
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,0 +1,19 @@
+import 'package:app/models/dto/home/home_dto.dart';
+import 'package:app/repository/request_type.dart';
+import 'package:app/services/base/base_service.dart';
+
+class HomeService extends BaseService{
+
+  Future<HomeDTO> getHomePage(int pageIndex,[int pageSize = 10]) async {
+    final res = await api.request(
+      "promotion-pages/home",
+      data:{
+        'page': pageIndex,
+        'size': pageSize
+      },
+      method: RequestType.GET,
+    );
+    return HomeDTO.fromJson(res.data);
+  }
+
+}
