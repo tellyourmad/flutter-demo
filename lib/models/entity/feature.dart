@@ -19,13 +19,16 @@ enum FeatureBlockLayoutType {
 
 /// 模块中，子元素链接类型
 enum FeatureBlockItemLinkType {
-  CATEGORY,
-  STORE,
-  PRODUCT,
-  PROMOTION_PAGE,
-  TELEPHONE,
-  PROMOTION,
-  MEMBRANE,
+  ARTICLE, // 文章
+  CATEGORY, // 分类
+  STORE, // 店铺
+  PRODUCT, // 商品
+  PROMOTION_PAGE, // 专题
+  PROMOTION, // 活动
+  SECKILL, // 秒杀活动
+  TELEPHONE, // 手机号
+  SZB_BROADCAST, // 上直播
+  MEMBRANE, // 膜品
 }
 
 class Feature {

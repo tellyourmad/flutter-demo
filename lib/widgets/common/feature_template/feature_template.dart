@@ -1,7 +1,10 @@
 import 'package:app/models/dto/promotion/feature/feature_block_dto.dart';
 import 'package:app/models/entity/feature.dart';
 import 'package:app/utils/screen_adapter.dart';
-import 'package:app/widgets/common/feature_template/blocks/banner.dart';
+import 'package:app/widgets/common/feature_template/blocks/activity.dart';
+import 'package:app/widgets/common/feature_template/blocks/carousel_banner.dart';
+import 'package:app/widgets/common/feature_template/blocks/image_banner.dart';
+import 'package:app/widgets/common/feature_template/blocks/mix_layout.dart';
 import 'package:app/widgets/common/feature_template/blocks/shortcut.dart';
 import 'package:flutter/material.dart';
 
@@ -18,6 +21,7 @@ class FeatureTemplateWidget extends StatelessWidget {
     this.type,
     this.blocks,
     this.inputWidget,
+    this.controller,
   }) : super(key: key);
 
   /// 专题模板类型
@@ -29,6 +33,9 @@ class FeatureTemplateWidget extends StatelessWidget {
   /// 顶部输入框
   /// 该属性只有当[type]为[FeatureType.HOME]有作用
   final Widget inputWidget;
+
+  /// 控制器
+  final ScrollController controller;
 
   List<Widget> get children {
     List<Widget> result = [];
@@ -62,16 +69,14 @@ class FeatureTemplateWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                  BlockBannerWidget(
+                  BlockCarouselBannerWidget(
                     hasPadding: true,
                     block: block,
                   )
                 ],
               );
             } else {
-              item = BlockBannerWidget(
-                block: block,
-              );
+              item = BlockCarouselBannerWidget(block: block);
             }
             item = AspectRatio(
               aspectRatio: 700 / 445,
@@ -79,7 +84,22 @@ class FeatureTemplateWidget extends StatelessWidget {
             );
             break;
           case FeatureBlockLayoutType.ICON:
-            item = BlockShortcutWidget(
+            item = BlockShortcutWidget(block: block);
+            break;
+          case FeatureBlockLayoutType.MIX1:
+            item = BlockImageBannerWidget(block: block);
+            break;
+          case FeatureBlockLayoutType.MIX2:
+          case FeatureBlockLayoutType.MIX3:
+          case FeatureBlockLayoutType.MIX4:
+          case FeatureBlockLayoutType.MIX5:
+            item = BlockMixLayoutWidget(
+              layoutType: detail.layoutType,
+              block: block,
+            );
+            break;
+          case FeatureBlockLayoutType.PROMOTION:
+            item = BlockActivityWidget(
               block: block,
             );
             break;
@@ -91,11 +111,6 @@ class FeatureTemplateWidget extends StatelessWidget {
 
       }
       if (item != null) {
-        if (this.type == FeatureType.HOME) {
-          item = SliverToBoxAdapter(
-            child: item,
-          );
-        }
         result.add(item);
       }
     }
@@ -104,20 +119,13 @@ class FeatureTemplateWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /// 首页专题用CustomScrollView
-    /// 普通专题用SingleChildScrollView
-    switch (this.type) {
-      case FeatureType.HOME:
-        return CustomScrollView(
-          slivers: [this.inputWidget]..addAll(children),
-        );
-      case FeatureType.NORMAL:
-      default:
-        return SingleChildScrollView(
-          child: Column(
-            children: children,
-          ),
-        );
-    }
+    return ListView.builder(
+      controller: controller,
+      padding: EdgeInsets.zero,
+      itemCount: children.length,
+      itemBuilder: (context, index) {
+        return children[index];
+      },
+    );
   }
 }

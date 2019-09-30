@@ -1,6 +1,7 @@
 import 'package:app/constants/app_theme.dart';
 import 'package:app/models/dto/promotion/feature/feature_block_dto.dart';
 import 'package:app/models/dto/promotion/feature/feature_block_link_item_dto.dart';
+import 'package:app/routes.dart';
 import 'package:app/utils/screen_adapter.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -45,8 +46,8 @@ class _MySwiperPaginationBuilder extends SwiperPlugin {
   }
 }
 
-class BlockBannerWidget extends StatelessWidget {
-  BlockBannerWidget({
+class BlockCarouselBannerWidget extends StatelessWidget {
+  BlockCarouselBannerWidget({
     Key key,
     @required this.block,
     this.hasPadding = false,
@@ -86,13 +87,22 @@ class BlockBannerWidget extends StatelessWidget {
             child: ClipRRect(
               borderRadius:
                   hasPadding ? BorderRadius.circular(5.0) : BorderRadius.zero,
-              child: Image(
-                width: double.infinity,
-                height: double.infinity,
-                fit: BoxFit.cover,
-                image: new NetworkImage(
-                  links[index].imgPath,
+              child: GestureDetector(
+                child: Image(
+                  width: double.infinity,
+                  height: double.infinity,
+                  fit: BoxFit.cover,
+                  image: new NetworkImage(
+                    links[index].imgPath,
+                  ),
                 ),
+                onTap: () {
+                  Routes.jumpTo(
+                    context,
+                    links[index].linkType,
+                    links[index].linkContent,
+                  );
+                },
               ),
             ),
           ),

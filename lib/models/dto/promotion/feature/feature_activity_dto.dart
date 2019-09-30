@@ -45,17 +45,15 @@ class FeatureActivityDTO {
   @JsonKey(fromJson: byteToBool, defaultValue: false)
   final bool showTimeRemaining;
 
-  /// 距离结束还剩多长时间
-  @JsonKey(fromJson: timeStampToDateTime)
-  final DateTime timeRemainingSec;
+  /// 距离结束还剩多长时间（毫秒）
+  final int timeRemainingSec;
 
-  /// 距离开始还有多长时间
-  @JsonKey(fromJson: timeStampToDateTime)
-  final DateTime secondToBeginTime;
+  /// 距离开始还有多长时间（毫秒）
+  final int secondToBeginTime;
 
-  /// 开始时间
-  @JsonKey(ignore: true)
-  final String startTime;
+  /// 开始时间（先忽略，现在没用）
+  @JsonKey(ignore: true,fromJson: timeStampToDateTime)
+  final DateTime startTime;
 
   /// 是否还有更多商品
   @JsonKey(defaultValue: false)

@@ -5,10 +5,15 @@ import 'package:app/services/home_service.dart';
 import 'package:app/utils/screen_adapter.dart';
 import 'package:app/widgets/basic/iconfont_widget.dart';
 import 'package:app/widgets/common/feature_template/feature_template.dart';
-import 'package:app/widgets/overwrite/sliver_app_bar_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+
+enum _HeaderInputLayout {
+  DEFAULT,
+  STACK, // 层叠
+  SPACE, // 占据空间
+}
 
 /// 蓝湖地址
 /// https://lanhuapp.com/web/#/item/project/board/detail?pid=a899c5f1-5d74-4952-8f30-c66706ef720b&project_id=a899c5f1-5d74-4952-8f30-c66706ef720b&image_id=5bf31d8c-5853-4434-9dc1-36c10cc989bd
@@ -22,6 +27,7 @@ class _HomePageState extends State<HomePage> {
   final HomeService _service = HomeService();
 
   FeatureDTO _info = FeatureDTO();
+  _HeaderInputLayout _headerInputLayout = _HeaderInputLayout.DEFAULT;
 
   @override
   void initState() {
@@ -34,15 +40,137 @@ class _HomePageState extends State<HomePage> {
   void _getData() async {
     /// 调用对应的service里的方法，发送请求获取信息
     _info = await _service.getHomePage(1);
+    _headerInputLayout = _HeaderInputLayout.SPACE;
     setState(() {});
   }
 
-  List<FeatureBlockDTO> get blocks{
+  List<FeatureBlockDTO> get blocks {
     return _info.featureBlocks.skip(3).cast<FeatureBlockDTO>().toList();
   }
 
   @override
   Widget build(BuildContext context) {
+    /// 顶部输入框
+    Widget _headerInput = Container(
+      width: double.infinity,
+      height: ScreenAdapter.height(50.0),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [
+            const Color(0xFFFF080B),
+            const Color(0xFFFF2F3C),
+          ],
+        ),
+      ),
+      padding: EdgeInsets.symmetric(
+        horizontal: ScreenAdapter.width(12.0),
+        vertical: ScreenAdapter.height(10.0),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Expanded(
+            flex: 1,
+            child: Container(
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.only(
+                left: ScreenAdapter.width(14.0),
+              ),
+
+              decoration: ShapeDecoration(
+                /// shape接收一个ShapeBorder抽象类实例，常用的有
+                ///   RoundedRectangleBorder，顶端圆角
+                ///   BeveledRectangleBorder，顶端斜角
+                ///   StadiumBorder，体育场型
+                ///   CircleBorder，圆形
+                shape: const StadiumBorder(),
+
+                color: AppColors.white,
+              ),
+              height: ScreenAdapter.height(29.0),
+
+              /// 典型一行n个东西的布局
+              child: Row(
+                children: <Widget>[
+                  /// "放大镜"Icon
+                  Icon(
+                    // Icons.search,  // 内置的图标库有Icons
+
+                    /// 我这里使用了自己创建的类IconFonts（/lib/widgets/basic/iconfont_widget.dart）
+                    /// 里面有多个自己的icon，用python生成（暂时不用关注如何生成）
+                    IconFonts.search,
+
+                    size: ScreenAdapter.fontSize(15.0),
+                    color: AppColors.greyBC,
+                  ),
+
+                  /// 中间间隔请用SizedBox来实现
+                  SizedBox(
+                    width: ScreenAdapter.width(8.5),
+                  ),
+
+                  Text(
+                    '搜索您想要的商品',
+                    style: TextStyle(
+                      color: AppColors.greyA9,
+                      fontSize: ScreenAdapter.fontSize(14.0),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            width: ScreenAdapter.width(13.5),
+          ),
+          Icon(
+            IconFonts.message,
+            size: ScreenAdapter.fontSize(27.0),
+            color: AppColors.white,
+          ),
+        ],
+      ),
+    );
+
+    Widget _content = Container(
+      height: double.infinity,
+      width: double.infinity,
+      child: FeatureTemplateWidget(
+        type: FeatureType.HOME,
+        blocks: blocks,
+      ),
+    );
+
+    switch (_headerInputLayout) {
+      case _HeaderInputLayout.STACK:
+        _content = Stack(
+          children: <Widget>[
+            Positioned(
+              left: 0,
+              right: 0,
+              top: 0,
+              child: _headerInput,
+            ),
+            _content,
+          ],
+        );
+        break;
+      case _HeaderInputLayout.SPACE:
+        _content = Column(
+          children: <Widget>[
+            _headerInput,
+            Expanded(
+              flex: 1,
+              child: _content,
+            ),
+          ],
+        );
+        break;
+      case _HeaderInputLayout.DEFAULT:
+      default:
+        break;
+    }
+
     /// 修改statusbar（状态栏）样式
     /// StatusbarStyle有两种模式
     ///   light:黑底白字
@@ -95,95 +223,7 @@ class _HomePageState extends State<HomePage> {
             /// Flex:1，设置权重，这里为了实现"占据剩下空间"效果
             Expanded(
               flex: 1,
-              child: FeatureTemplateWidget(
-                type: FeatureType.HOME,
-                blocks: blocks,
-                inputWidget: SliverPersistentHeader(
-                  pinned: true,
-                  delegate: MySliverAppBarDelegate(
-                    minHeight: ScreenAdapter.height(50.0),
-                    maxHeight: ScreenAdapter.height(50.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [
-                            const Color(0xFFFF080B),
-                            const Color(0xFFFF2F3C),
-                          ],
-                        ),
-                      ),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: ScreenAdapter.width(12.0),
-                        vertical: ScreenAdapter.height(10.0),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Expanded(
-                            flex: 1,
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              padding: EdgeInsets.only(
-                                left: ScreenAdapter.width(14.0),
-                              ),
-
-                              decoration: ShapeDecoration(
-                                /// shape接收一个ShapeBorder抽象类实例，常用的有
-                                ///   RoundedRectangleBorder，顶端圆角
-                                ///   BeveledRectangleBorder，顶端斜角
-                                ///   StadiumBorder，体育场型
-                                ///   CircleBorder，圆形
-                                shape: const StadiumBorder(),
-
-                                color: AppColors.white,
-                              ),
-                              height: ScreenAdapter.height(29.0),
-
-                              /// 典型一行n个东西的布局
-                              child: Row(
-                                children: <Widget>[
-                                  /// "放大镜"Icon
-                                  Icon(
-                                    // Icons.search,  // 内置的图标库有Icons
-
-                                    /// 我这里使用了自己创建的类IconFonts（/lib/widgets/basic/iconfont_widget.dart）
-                                    /// 里面有多个自己的icon，用python生成（暂时不用关注如何生成）
-                                    IconFonts.search,
-
-                                    size: ScreenAdapter.fontSize(15.0),
-                                    color: AppColors.greyBC,
-                                  ),
-
-                                  /// 中间间隔请用SizedBox来实现
-                                  SizedBox(
-                                    width: ScreenAdapter.width(8.5),
-                                  ),
-
-                                  Text(
-                                    '搜索您想要的商品',
-                                    style: TextStyle(
-                                      color: AppColors.greyA9,
-                                      fontSize: ScreenAdapter.fontSize(14.0),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: ScreenAdapter.width(13.5),
-                          ),
-                          Icon(
-                            IconFonts.message,
-                            size: ScreenAdapter.fontSize(27.0),
-                            color: AppColors.white,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              child: _content,
             ),
           ],
         ),

@@ -4,7 +4,7 @@ part 'basic_dto.g.dart';
 
 @JsonSerializable()
 class BasicDTO<T>{
-  final dynamic data;
+  final T data;
   final String msg;
   final bool success;
   final int total;

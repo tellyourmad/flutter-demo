@@ -64,12 +64,15 @@ T _$enumDecodeNullable<T>(
 }
 
 const _$FeatureBlockItemLinkTypeEnumMap = {
+  FeatureBlockItemLinkType.ARTICLE: 'ARTICLE',
   FeatureBlockItemLinkType.CATEGORY: 'CATEGORY',
   FeatureBlockItemLinkType.STORE: 'STORE',
   FeatureBlockItemLinkType.PRODUCT: 'PRODUCT',
   FeatureBlockItemLinkType.PROMOTION_PAGE: 'PROMOTION_PAGE',
-  FeatureBlockItemLinkType.TELEPHONE: 'TELEPHONE',
   FeatureBlockItemLinkType.PROMOTION: 'PROMOTION',
+  FeatureBlockItemLinkType.SECKILL: 'SECKILL',
+  FeatureBlockItemLinkType.TELEPHONE: 'TELEPHONE',
+  FeatureBlockItemLinkType.SZB_BROADCAST: 'SZB_BROADCAST',
   FeatureBlockItemLinkType.MEMBRANE: 'MEMBRANE',
 };
 

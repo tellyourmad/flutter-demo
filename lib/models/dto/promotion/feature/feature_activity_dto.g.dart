@@ -16,8 +16,8 @@ FeatureActivityDTO _$FeatureActivityDTOFromJson(Map<String, dynamic> json) {
     showCoverImg: byteToBool(json['showCoverImg']) ?? false,
     coverImgPath: json['coverImgPath'] as String,
     showTimeRemaining: byteToBool(json['showTimeRemaining']) ?? false,
-    timeRemainingSec: timeStampToDateTime(json['timeRemainingSec']),
-    secondToBeginTime: timeStampToDateTime(json['secondToBeginTime']),
+    timeRemainingSec: json['timeRemainingSec'] as int,
+    secondToBeginTime: json['secondToBeginTime'] as int,
     hasMoreProducts: json['hasMoreProducts'] as bool ?? false,
     products: (json['products'] as List)
             ?.map((e) => e == null
@@ -37,8 +37,8 @@ Map<String, dynamic> _$FeatureActivityDTOToJson(FeatureActivityDTO instance) =>
       'coverImgPath': instance.coverImgPath,
       'showCoverImg': instance.showCoverImg,
       'showTimeRemaining': instance.showTimeRemaining,
-      'timeRemainingSec': instance.timeRemainingSec?.toIso8601String(),
-      'secondToBeginTime': instance.secondToBeginTime?.toIso8601String(),
+      'timeRemainingSec': instance.timeRemainingSec,
+      'secondToBeginTime': instance.secondToBeginTime,
       'hasMoreProducts': instance.hasMoreProducts,
       'products': instance.products,
     };
