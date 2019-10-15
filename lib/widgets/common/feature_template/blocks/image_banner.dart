@@ -1,5 +1,6 @@
 import 'package:app/models/dto/promotion/feature/feature_block_dto.dart';
 import 'package:app/routes.dart';
+import 'package:app/widgets/basic/aliyun_image.dart';
 import 'package:flutter/widgets.dart';
 
 class BlockImageBannerWidget extends StatelessWidget {
@@ -15,10 +16,10 @@ class BlockImageBannerWidget extends StatelessWidget {
     return Column(
       children: this.block.detail.linkItems.map((item) {
         return GestureDetector(
-          child: Image(
+          child: AliyunImage(
             width: double.infinity,
             fit: BoxFit.fitWidth,
-            image: NetworkImage(item.imgPath),
+            imageUrl: item.imgPath,
           ),
           onTap: () {
             Routes.jumpTo(

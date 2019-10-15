@@ -1,0 +1,48 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/widgets.dart';
+
+class AliyunImage extends CachedNetworkImage {
+  AliyunImage({
+    imageUrl,
+    imageBuilder,
+    placeholder,
+    errorWidget,
+    fadeOutDuration: const Duration(milliseconds: 1000),
+    fadeOutCurve: Curves.easeOut,
+    fadeInDuration: const Duration(milliseconds: 500),
+    fadeInCurve: Curves.easeIn,
+    width,
+    height,
+    fit,
+    alignment: Alignment.center,
+    repeat: ImageRepeat.noRepeat,
+    matchTextDirection: false,
+    httpHeaders,
+    cacheManager,
+    useOldImageOnUrlChange: false,
+    color,
+    colorBlendMode,
+    placeholderFadeInDuration,
+  }) : super(
+          imageUrl: imageUrl + '?x-oss-process=image/resize,w_${width!=null&&width!=double.infinity?width:375}',
+          imageBuilder: imageBuilder,
+          placeholder: placeholder,
+          errorWidget: errorWidget,
+          fadeOutDuration: fadeOutDuration,
+          fadeOutCurve: fadeOutCurve,
+          fadeInDuration: fadeInDuration,
+          fadeInCurve: fadeInCurve,
+          width: width,
+          height: height,
+          fit: fit,
+          alignment: alignment,
+          repeat: repeat,
+          matchTextDirection: matchTextDirection,
+          httpHeaders: httpHeaders,
+          cacheManager: cacheManager,
+          useOldImageOnUrlChange: useOldImageOnUrlChange,
+          color: color,
+          colorBlendMode: colorBlendMode,
+          placeholderFadeInDuration: placeholderFadeInDuration,
+        );
+}

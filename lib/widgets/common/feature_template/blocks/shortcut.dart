@@ -2,6 +2,7 @@ import 'package:app/constants/app_theme.dart';
 import 'package:app/models/dto/promotion/feature/feature_block_dto.dart';
 import 'package:app/routes.dart';
 import 'package:app/utils/screen_adapter.dart';
+import 'package:app/widgets/basic/aliyun_image.dart';
 import 'package:flutter/cupertino.dart';
 
 class BlockShortcutWidget extends StatelessWidget {
@@ -25,12 +26,10 @@ class BlockShortcutWidget extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Image(
+                AliyunImage(
                   height: ScreenAdapter.height(45.0),
                   fit: BoxFit.fitHeight,
-                  image: NetworkImage(
-                    item.imgPath,
-                  ),
+                  imageUrl: item.imgPath,
                 ),
                 SizedBox(
                   height: ScreenAdapter.height(9.0),

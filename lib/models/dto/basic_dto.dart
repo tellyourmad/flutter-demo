@@ -3,39 +3,42 @@ import 'package:json_annotation/json_annotation.dart';
 part 'basic_dto.g.dart';
 
 @JsonSerializable()
-class BasicDTO<T>{
-  final T data;
+class BasicDTO<T> {
+  @JsonKey(ignore: true)
+  T data;
+
   final String msg;
+
   final bool success;
+
   final int total;
 
   BasicDTO({
     this.data,
     this.msg,
     this.success,
-    this.total
+    this.total,
   });
 
-  dynamic get responseData{
+  get responseData {
     return this.data;
   }
 
-  
-
-  String get message{
-    if(success){
-      return this.msg??'成功';
+  String get message {
+    if (success) {
+      return this.msg ?? '成功';
     } else {
-      return this.msg??'失败';
+      return this.msg ?? '失败';
     }
   }
 
-  int get pageTotal{
+  int get pageTotal {
     return this.total;
   }
 
-  factory BasicDTO.fromJson(Map<String, dynamic> json) =>
-      _$BasicDTOFromJson(json);
-
+  factory BasicDTO.fromJson(Map<String, dynamic> json) {
+    BasicDTO result = _$BasicDTOFromJson(json);
+    result.data = json['data'] as T;
+    return result;
+  }
 }
-

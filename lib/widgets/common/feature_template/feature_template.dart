@@ -18,6 +18,7 @@ enum FeatureType {
 class FeatureTemplateWidget extends StatelessWidget {
   FeatureTemplateWidget({
     Key key,
+    this.topBlockDecoration,
     this.type,
     this.blocks,
     this.inputWidget,
@@ -26,6 +27,9 @@ class FeatureTemplateWidget extends StatelessWidget {
 
   /// 专题模板类型
   final FeatureType type;
+
+  /// 第一个block背景样式
+  final Decoration topBlockDecoration;
 
   /// 模块集合
   final List<FeatureBlockDTO> blocks;
@@ -59,14 +63,7 @@ class FeatureTemplateWidget extends StatelessWidget {
                     child: Container(
                       width: double.infinity,
                       height: ScreenAdapter.height(150.0),
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [
-                            const Color(0xFFFF080B),
-                            const Color(0xFFFF2F3C),
-                          ],
-                        ),
-                      ),
+                      decoration: this.topBlockDecoration,
                     ),
                   ),
                   BlockCarouselBannerWidget(
@@ -98,20 +95,22 @@ class FeatureTemplateWidget extends StatelessWidget {
               block: block,
             );
             break;
-          case FeatureBlockLayoutType.PROMOTION:
-            item = BlockActivityWidget(
-              block: block,
-            );
-            break;
           default:
             break;
         }
       } else if (block.activity != null) {
         /// 活动模块
-
+        item = BlockActivityWidget(
+          block: block,
+        );
       }
       if (item != null) {
-        result.add(item);
+        result.add(
+          Container(
+            color: block.backgroundColour,
+            child: item,
+          ),
+        );
       }
     }
     return result;
@@ -123,9 +122,7 @@ class FeatureTemplateWidget extends StatelessWidget {
       controller: controller,
       padding: EdgeInsets.zero,
       itemCount: children.length,
-      itemBuilder: (context, index) {
-        return children[index];
-      },
+      itemBuilder: (context, index) => children[index],
     );
   }
 }

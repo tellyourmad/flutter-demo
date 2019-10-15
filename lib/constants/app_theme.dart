@@ -66,6 +66,7 @@ class AppColors {
   AppColors._();
 
   static const Color primaryRed = const Color(0xFFE94136);
+  // static const Color tagRed = const Color(0xFFE94136);
   static const Color secondaryRed = const Color(0xFFFFD3D5);
 
   static const Color tipsBgRed = const Color(0xFFE85157);
@@ -88,6 +89,7 @@ class AppColors {
   static const Color grey81 = const Color(0xFF818181);
   static const Color grey64 = const Color(0xFF646464);
   static const Color grey43 = const Color(0xFF434343);
+  static const Color grey36 = const Color(0xFF363636);
   static const Color grey30 = const Color(0xFF303030);
   
   

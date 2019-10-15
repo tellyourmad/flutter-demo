@@ -18,6 +18,9 @@ dependencies:
   # Http
   dio: 2.1.6
 
+  # 图片缓存组件
+  cached_network_image: ^1.1.1
+
 
 dev_dependencies:
   flutter_test:

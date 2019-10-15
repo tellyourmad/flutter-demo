@@ -25,7 +25,7 @@ FeatureBlockDTO _$FeatureBlockDTOFromJson(Map<String, dynamic> json) {
             : SupplyCouponDTO.fromJson(e as Map<String, dynamic>))
         ?.toList(),
     coverImgPath: json['coverImgPath'] as String,
-    backgroundColour: json['backgroundColour'] as String,
+    backgroundColour: rbgaToColor(json['backgroundColour'] as String),
     backgroundImg: json['backgroundImg'] as String,
   );
 }

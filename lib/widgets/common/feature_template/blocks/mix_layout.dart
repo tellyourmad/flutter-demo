@@ -2,6 +2,7 @@ import 'package:app/models/dto/promotion/feature/feature_block_dto.dart';
 import 'package:app/models/dto/promotion/feature/feature_block_link_item_dto.dart';
 import 'package:app/models/entity/feature.dart';
 import 'package:app/utils/screen_adapter.dart';
+import 'package:app/widgets/basic/aliyun_image.dart';
 import 'package:flutter/widgets.dart';
 
 enum _ShapeType {
@@ -52,12 +53,14 @@ class _Item extends StatelessWidget {
       width: ScreenAdapter.width(width),
       child: AspectRatio(
         aspectRatio: aspectRatio,
-        child: Image(
-          width: double.infinity,
-          height: double.infinity,
-          fit: BoxFit.contain,
-          image: NetworkImage(this.item.imgPath),
-        ),
+        child: this.item == null
+            ? Container()
+            : AliyunImage(
+                width: double.infinity,
+                height: double.infinity,
+                fit: BoxFit.cover,
+                imageUrl: this.item.imgPath,
+              ),
       ),
     );
   }
@@ -76,6 +79,7 @@ class BlockMixLayoutWidget extends StatelessWidget {
 
   List<Widget> get children {
     var links = block.detail.linkItems;
+    links.addAll(List(5));
     switch (this.layoutType) {
       case FeatureBlockLayoutType.MIX2:
         return [

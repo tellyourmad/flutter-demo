@@ -1,3 +1,4 @@
+import 'package:app/models/dto/promotion/activity/activity_intensity_dto.dart';
 import 'package:app/models/dto/promotion/feature/feature_activity_product_dto.dart';
 import 'package:app/models/entity/activity.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -26,7 +27,8 @@ class FeatureActivityDTO {
   final int promotionId;
 
   /// 活动类型
-  final ActivityType promotionType;
+  @JsonKey(name: "promotionType")
+  final ActivityType type;
 
   /// 商品排列（一行几列）
   final int productsColumn;
@@ -52,7 +54,7 @@ class FeatureActivityDTO {
   final int secondToBeginTime;
 
   /// 开始时间（先忽略，现在没用）
-  @JsonKey(ignore: true,fromJson: timeStampToDateTime)
+  @JsonKey(ignore: true, fromJson: timeStampToDateTime)
   final DateTime startTime;
 
   /// 是否还有更多商品
@@ -63,11 +65,13 @@ class FeatureActivityDTO {
   @JsonKey(defaultValue: [])
   final List<FeatureActivityProductDTO> products;
 
-  //  List<PromotionIntensityVo> promotionIntensities;
+  /// 活动力度
+  @JsonKey(name: "promotionIntensities")
+  List<ActivityIntensityDTO> intensities;
 
   FeatureActivityDTO({
     this.promotionId,
-    this.promotionType,
+    this.type,
     this.productsColumn,
     this.subTitle,
     this.showCoverImg,

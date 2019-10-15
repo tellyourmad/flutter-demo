@@ -3,6 +3,7 @@ import 'package:app/models/dto/promotion/feature/feature_block_dto.dart';
 import 'package:app/models/dto/promotion/feature/feature_block_link_item_dto.dart';
 import 'package:app/routes.dart';
 import 'package:app/utils/screen_adapter.dart';
+import 'package:app/widgets/basic/aliyun_image.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
@@ -88,13 +89,11 @@ class BlockCarouselBannerWidget extends StatelessWidget {
               borderRadius:
                   hasPadding ? BorderRadius.circular(5.0) : BorderRadius.zero,
               child: GestureDetector(
-                child: Image(
+                child: AliyunImage(
                   width: double.infinity,
                   height: double.infinity,
                   fit: BoxFit.cover,
-                  image: new NetworkImage(
-                    links[index].imgPath,
-                  ),
+                  imageUrl: links[index].imgPath,
                 ),
                 onTap: () {
                   Routes.jumpTo(

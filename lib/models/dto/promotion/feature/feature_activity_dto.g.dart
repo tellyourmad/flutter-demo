@@ -9,8 +9,7 @@ part of 'feature_activity_dto.dart';
 FeatureActivityDTO _$FeatureActivityDTOFromJson(Map<String, dynamic> json) {
   return FeatureActivityDTO(
     promotionId: json['promotionId'] as int,
-    promotionType:
-        _$enumDecodeNullable(_$ActivityTypeEnumMap, json['promotionType']),
+    type: _$enumDecodeNullable(_$ActivityTypeEnumMap, json['promotionType']),
     productsColumn: json['productsColumn'] as int,
     subTitle: json['subTitle'] as String,
     showCoverImg: byteToBool(json['showCoverImg']) ?? false,
@@ -25,13 +24,17 @@ FeatureActivityDTO _$FeatureActivityDTOFromJson(Map<String, dynamic> json) {
                 : FeatureActivityProductDTO.fromJson(e as Map<String, dynamic>))
             ?.toList() ??
         [],
-  );
+  )..intensities = (json['promotionIntensities'] as List)
+      ?.map((e) => e == null
+          ? null
+          : ActivityIntensityDTO.fromJson(e as Map<String, dynamic>))
+      ?.toList();
 }
 
 Map<String, dynamic> _$FeatureActivityDTOToJson(FeatureActivityDTO instance) =>
     <String, dynamic>{
       'promotionId': instance.promotionId,
-      'promotionType': _$ActivityTypeEnumMap[instance.promotionType],
+      'promotionType': _$ActivityTypeEnumMap[instance.type],
       'productsColumn': instance.productsColumn,
       'subTitle': instance.subTitle,
       'coverImgPath': instance.coverImgPath,
@@ -41,6 +44,7 @@ Map<String, dynamic> _$FeatureActivityDTOToJson(FeatureActivityDTO instance) =>
       'secondToBeginTime': instance.secondToBeginTime,
       'hasMoreProducts': instance.hasMoreProducts,
       'products': instance.products,
+      'promotionIntensities': instance.intensities,
     };
 
 T _$enumDecode<T>(
@@ -81,4 +85,8 @@ const _$ActivityTypeEnumMap = {
   ActivityType.PURCHASE_RESTRICTION: 'PURCHASE_RESTRICTION',
   ActivityType.GROUPON: 'GROUPON',
   ActivityType.BUNDLE: 'BUNDLE',
+  ActivityType.CONDITION_MARK_DOWN: 'CONDITION_MARK_DOWN',
+  ActivityType.CONDITION_DISCOUNT: 'CONDITION_DISCOUNT',
+  ActivityType.CONDITION_COUPON: 'CONDITION_COUPON',
+  ActivityType.SECOND_HALF_PRICE: 'SECOND_HALF_PRICE',
 };

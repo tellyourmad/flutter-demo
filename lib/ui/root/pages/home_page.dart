@@ -27,6 +27,7 @@ class _HomePageState extends State<HomePage> {
   final HomeService _service = HomeService();
 
   FeatureDTO _info = FeatureDTO();
+  bool _loading = true;
   _HeaderInputLayout _headerInputLayout = _HeaderInputLayout.DEFAULT;
 
   @override
@@ -40,8 +41,49 @@ class _HomePageState extends State<HomePage> {
   void _getData() async {
     /// 调用对应的service里的方法，发送请求获取信息
     _info = await _service.getHomePage(1);
-    _headerInputLayout = _HeaderInputLayout.SPACE;
+
+    Color _searchBarBgColor = _info.featureBlocks[1].backgroundColour;
+    if (_searchBarBgColor.opacity >= 1) {
+      _headerInputLayout = _HeaderInputLayout.SPACE;
+    } else {
+      _headerInputLayout = _HeaderInputLayout.STACK;
+    }
+    _loading = false;
+
     setState(() {});
+  }
+
+  /// 顶部样式
+  dynamic get headerStyle {
+    bool _isLightColor(Color color) {
+      num _colorVal =
+          color.red * 0.299 + color.green * 0.587 + color.blue * 0.114;
+      return _colorVal >= 192;
+    }
+
+    Color _searchBarBgColor = Color(0xFFFFFFFF);
+    Color _statusBarBgColor = Color(0xFFFFFFFF);
+    if (!_loading) {
+      _searchBarBgColor = _info.featureBlocks[1].backgroundColour;
+      _statusBarBgColor = _info.featureBlocks[2].backgroundColour;
+    }
+
+    bool _searchBarIsLight = _isLightColor(_searchBarBgColor);
+    return {
+      'statusBar': {
+        'decoration': BoxDecoration(color: _statusBarBgColor),
+        'style':
+            _statusBarBgColor.opacity >= 1 || _isLightColor(_statusBarBgColor)
+                ? SystemUiOverlayStyle.dark
+                : SystemUiOverlayStyle.light,
+      },
+      'searchBar': {
+        'decoration': BoxDecoration(color: _searchBarBgColor),
+        'inputBg': _searchBarIsLight ? AppColors.greyF3 : AppColors.white,
+        'iconColor': _searchBarIsLight ? AppColors.black666 : AppColors.white,
+      },
+      'topBlock': {'decoration': BoxDecoration(color: _searchBarBgColor)}
+    };
   }
 
   List<FeatureBlockDTO> get blocks {
@@ -54,14 +96,7 @@ class _HomePageState extends State<HomePage> {
     Widget _headerInput = Container(
       width: double.infinity,
       height: ScreenAdapter.height(50.0),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [
-            const Color(0xFFFF080B),
-            const Color(0xFFFF2F3C),
-          ],
-        ),
-      ),
+      decoration: headerStyle['searchBar']['decoration'],
       padding: EdgeInsets.symmetric(
         horizontal: ScreenAdapter.width(12.0),
         vertical: ScreenAdapter.height(10.0),
@@ -78,33 +113,18 @@ class _HomePageState extends State<HomePage> {
               ),
 
               decoration: ShapeDecoration(
-                /// shape接收一个ShapeBorder抽象类实例，常用的有
-                ///   RoundedRectangleBorder，顶端圆角
-                ///   BeveledRectangleBorder，顶端斜角
-                ///   StadiumBorder，体育场型
-                ///   CircleBorder，圆形
                 shape: const StadiumBorder(),
-
-                color: AppColors.white,
+                color: headerStyle['searchBar']['inputBg'],
               ),
               height: ScreenAdapter.height(29.0),
 
-              /// 典型一行n个东西的布局
               child: Row(
                 children: <Widget>[
-                  /// "放大镜"Icon
                   Icon(
-                    // Icons.search,  // 内置的图标库有Icons
-
-                    /// 我这里使用了自己创建的类IconFonts（/lib/widgets/basic/iconfont_widget.dart）
-                    /// 里面有多个自己的icon，用python生成（暂时不用关注如何生成）
                     IconFonts.search,
-
                     size: ScreenAdapter.fontSize(15.0),
                     color: AppColors.greyBC,
                   ),
-
-                  /// 中间间隔请用SizedBox来实现
                   SizedBox(
                     width: ScreenAdapter.width(8.5),
                   ),
@@ -126,21 +146,25 @@ class _HomePageState extends State<HomePage> {
           Icon(
             IconFonts.message,
             size: ScreenAdapter.fontSize(27.0),
-            color: AppColors.white,
+            color: headerStyle['searchBar']['iconColor'],
           ),
         ],
       ),
     );
 
+    /// 内容
     Widget _content = Container(
       height: double.infinity,
       width: double.infinity,
       child: FeatureTemplateWidget(
+        topBlockDecoration: headerStyle['topBlock']['decoration'],
         type: FeatureType.HOME,
         blocks: blocks,
       ),
     );
 
+
+    /// 根据[_headerInputLayout]来判断搜索框[_headerInput]是定位[stack]在内容[_content]上方，还是占据空间[column]
     switch (_headerInputLayout) {
       case _HeaderInputLayout.STACK:
         _content = Stack(
@@ -171,56 +195,19 @@ class _HomePageState extends State<HomePage> {
         break;
     }
 
-    /// 修改statusbar（状态栏）样式
-    /// StatusbarStyle有两种模式
-    ///   light:黑底白字
-    ///   dark:白底黑字
-    SystemUiOverlayStyle overlayStyle = SystemUiOverlayStyle.light.copyWith(
-      statusBarColor:
-          Colors.transparent, // 不要给statusBarColor设置Colors里面没有的颜色，会有bug
-    );
-
-    /// build方法中需要return一个Widget
-    /// 这里在主体view结构的外面再套了一层AnnotatedRegion，用以修改statusbar的样式
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: overlayStyle,
-
-      /// 安全距离，关于"安全距离"是什么，请自行查阅"全面屏的安全距离"
+      value: headerStyle['statusBar']['style'].copyWith(
+        statusBarColor: Colors.transparent,
+      ),
       child: SafeArea(
-        top: false, // 不保留上方的安全距离，因为打算把首页上面的空间（包括搜索栏和statusbar）做在一起
-
-        /// 常用基本布局有两种：
-        ///   Column：列
-        ///   Row：行
-        /// 它们两个都是有：
-        ///   MainAxisAlignment：主轴
-        ///   CrossAxisAlignment：交叉轴
-        /// 理解方式同CSS Flex
+        top: false,
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.spaceBetween, // 主轴的默认值为start
-          // crossAxisAlignment: CrossAxisAlignment.center, // 交叉轴的默认值为center
           children: <Widget>[
             Container(
-              /// 宽高都是接收一个double类型
-              /// 传double.infinity（无限），代表该组件的宽度将会"尽可能的大"
               width: double.infinity,
               height: ScreenAdapter.padding.top,
-
-              /// decoration为修饰器，接受各种继承Decoration的类的实例化对象，如：
-              ///   BoxDecoration，边框、背景色、圆角、阴影、渐变色、形状
-              ///   ShapeDecoration，形状（必填）、背景色、阴影、渐变色
-              decoration: BoxDecoration(
-                /// 背景色
-                gradient: const LinearGradient(
-                  colors: [
-                    const Color(0xFFFF080B),
-                    const Color(0xFFFF2F3C),
-                  ],
-                ),
-              ),
+              decoration: headerStyle['statusBar']['decoration'],
             ),
-
-            /// Flex:1，设置权重，这里为了实现"占据剩下空间"效果
             Expanded(
               flex: 1,
               child: _content,
