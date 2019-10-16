@@ -118,3 +118,7 @@ import 'package:czh/widgets/iconfont_widget.dart';
 #### step2:
 network请求相关的封装，如service和model；
 页面使用请求数据以及渲染。
+
+#### step3:
+首页编写;
+/widgets/common 文件夹内的组件编写。
