@@ -17,12 +17,13 @@ class Routes {
     login: (BuildContext context) => LoginScreen(),
   };
 
-  /// 根据相应参数获取跳转目标
-  static jumpTo(BuildContext context,FeatureBlockItemLinkType linkType, String linkContent,
+  /// 根据相应参数获取跳转目标活动页面
+  static jumpToActivity(BuildContext context,FeatureBlockItemLinkType linkType, String linkContent,
       [ActivityType activityType]) {
     if (linkType == null || linkContent == null) {
       return;
     }
+    /// TODO 跳转活动页
     // var routeName;
     // Map params={};
     // switch(linkType){

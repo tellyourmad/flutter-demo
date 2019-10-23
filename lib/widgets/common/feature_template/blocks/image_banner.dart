@@ -22,7 +22,7 @@ class BlockImageBannerWidget extends StatelessWidget {
             imageUrl: item.imgPath,
           ),
           onTap: () {
-            Routes.jumpTo(
+            Routes.jumpToActivity(
               context,
               item.linkType,
               item.linkContent,

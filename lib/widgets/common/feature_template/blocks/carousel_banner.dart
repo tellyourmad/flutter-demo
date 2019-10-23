@@ -96,7 +96,7 @@ class BlockCarouselBannerWidget extends StatelessWidget {
                   imageUrl: links[index].imgPath,
                 ),
                 onTap: () {
-                  Routes.jumpTo(
+                  Routes.jumpToActivity(
                     context,
                     links[index].linkType,
                     links[index].linkContent,

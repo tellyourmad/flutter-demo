@@ -44,7 +44,7 @@ class BlockShortcutWidget extends StatelessWidget {
               ],
             ),
             onTap: () {
-              Routes.jumpTo(
+              Routes.jumpToActivity(
                 context,
                 item.linkType,
                 item.linkContent,
